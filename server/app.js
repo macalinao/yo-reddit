@@ -56,7 +56,7 @@ function handleSubscriber(doc, next) {
     });
   }, function(result) {
     if (!result) {
-      return;
+      return next();
     }
 
     console.log('Found new posts for user ' + doc.yo + ' in subreddit /r/' + result + '!');
