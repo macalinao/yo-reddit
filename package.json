@@ -1,5 +1,5 @@
 {
-  "name": "yo-twitter",
+  "name": "yo-reddit",
   "version": "0.1.0",
   "author": "Ian Macalinao <me@ian.pw>",
   "main": "server/app.js",
