@@ -5,11 +5,7 @@
 'use strict';
 
 var errors = require('./components/errors');
-
-var yo = (function() {
-  var Yo = require('yo-api');
-  return new Yo(process.env.YO_API_TOKEN);
-})();
+var mongoose = require('mongoose');
 
 module.exports = function(app) {
   app.route('/register')
@@ -17,13 +13,21 @@ module.exports = function(app) {
       var yoName = req.body.yoName;
       var twitterName = req.body.twitterName;
 
-      console.log('yoing...');
-      yo.yo(yoName, function(err, head, body) {
-        if (head.statusCode === 201) {
-          res.send('OK');
+      var Subscriber = mongoose.model('Subscriber');
+      Subscriber.findOne({
+        yo: yoName
+      }).exec(function(err, doc) {
+        if (!doc) {
+          doc = new Subscriber({
+            yo: yoName,
+            following: [twitterName]
+          });
         } else {
-          res.status(400).send('NOT OK');
+          doc.following.push(twitterName);
         }
+        doc.save(function(err) {
+          res.send('OK');
+        });
       });
     });
 

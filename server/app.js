@@ -14,17 +14,40 @@ var config = require('./config/environment');
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
-// Populate DB with sample data
-if(config.seedDB) { require('./config/seed'); }
+var Subscriber = mongoose.model('Subscriber', new mongoose.Schema({
+  yo: {
+    type: String,
+    unique: true
+  },
+  following: [String],
+  lastUpdate: Date
+}));
 
 // Setup server
 var app = express();
 var server = require('http').createServer(app);
+
 require('./config/express')(app);
 require('./routes')(app);
 
+// Yo stuff
+var yo = (function() {
+  var Yo = require('yo-api');
+  return new Yo(process.env.YO_API_TOKEN);
+})();
+
+setInterval(function() {
+  yo.yo(yoName, function(err, head, body) {
+    if (head.statusCode === 201) {
+      res.send('OK');
+    } else {
+      res.status(400).send('NOT OK');
+    }
+  });
+}, 60000);
+
 // Start server
-server.listen(config.port, config.ip, function () {
+server.listen(config.port, config.ip, function() {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
 });
 
