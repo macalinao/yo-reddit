@@ -19,7 +19,7 @@ module.exports = function(app) {
       }).exec(function(err, doc) {
         if (!doc) {
           doc = new Subscriber({
-            yo: yoName,
+            yo: yoName.toLowerCase(),
             following: [subreddit],
             lastUpdate: new Date()
           });
@@ -34,9 +34,11 @@ module.exports = function(app) {
 
   app.route('/unsubscribe')
     .get(function(req, res) {
-      var username = req.query.username;
+      var username = req.query.username.toLowerCase();
       var Subscriber = mongoose.model('Subscriber');
-      Subscriber.remove({ yo: username }).exec(function(err) {
+      Subscriber.remove({
+        yo: username
+      }).exec(function(err) {
         if (err) {
           res.status(404).send('Username does not exist');
           return;
