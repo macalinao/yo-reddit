@@ -32,6 +32,19 @@ module.exports = function(app) {
       });
     });
 
+  app.route('/unsubscribe')
+    .get(function(req, res) {
+      var username = req.query.username;
+      var Subscriber = mongoose.model('Subscriber');
+      Subscriber.remove({ yo: username }).exec(function(err) {
+        if (err) {
+          res.status(404).send('Username does not exist');
+          return;
+        }
+        res.send('OK');
+      });
+    });
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
     .get(errors[404]);
