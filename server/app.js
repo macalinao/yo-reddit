@@ -38,12 +38,24 @@ var yo = (function() {
   return new Yo(process.env.YO_API_TOKEN);
 })();
 
+function isTwitterUpdated(user) {
+
+}
+
+function handleSubscriber(doc, next) {
+  async.detect(doc.following, function(twitterName, cb) {
+    isTwitterUpdated(twitterName, cb);
+  }, function(result) {
+    yo.yo(doc.yo, function(err, head, body) {
+      next();
+    });
+  });
+};
+
 setInterval(function() {
   Subscriber.find().exec(function(err, docs) {
     async.each(docs, function(doc, next) {
-      yo.yo(doc.yo, function(err, head, body) {
-        next();
-      });
+      handleSubscriber(doc, next);
     }, function(err) {
       if (err) {
         console.log(err);

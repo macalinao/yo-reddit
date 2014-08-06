@@ -5,6 +5,7 @@
   "main": "server/app.js",
   "dependencies": {
     "async": "^0.9.0",
+    "birdeater": "0.0.3",
     "body-parser": "~1.0.0",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
