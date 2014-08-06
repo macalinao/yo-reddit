@@ -62,7 +62,7 @@ function handleSubscriber(doc, next) {
   });
 };
 
-setInterval(function() {
+function updateSubscribers() {
   Subscriber.find().exec(function(err, docs) {
     async.each(docs, function(doc, next) {
       handleSubscriber(doc, next);
@@ -73,7 +73,9 @@ setInterval(function() {
       console.log('Updated ' + docs.length + ' subscribers.');
     });
   });
-}, 60000);
+}
+setInterval(updateSubscribers, 60000);
+updateSubscribers();
 
 // Start server
 server.listen(config.port, config.ip, function() {
