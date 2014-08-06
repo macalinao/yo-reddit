@@ -7,6 +7,7 @@
 // Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+var _ = require('lodash');
 var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
@@ -37,12 +38,16 @@ var yo = (function() {
 })();
 
 setInterval(function() {
-  yo.yo(yoName, function(err, head, body) {
-    if (head.statusCode === 201) {
-      res.send('OK');
-    } else {
-      res.status(400).send('NOT OK');
-    }
+  Subscriber.find().exec(function(err, docs) {
+    _.forEach(docs, function(doc) {
+      yo.yo(doc.yo, function(err, head, body) {
+        if (head.statusCode === 201) {
+          res.send('OK');
+        } else {
+          res.status(400).send('NOT OK');
+        }
+      });
+    });
   });
 }, 60000);
 
