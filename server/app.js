@@ -51,10 +51,15 @@ function handleSubscriber(doc, next) {
       }
       var posts = res.body.data.children;
       cb(null, _.find(posts, function(post) {
-        return last.isBefore(post.created_utc);
+        return last.isBefore(post.created_utc) ? subreddit : null;
       }));
     });
   }, function(result) {
+    if (!result) {
+      return;
+    }
+
+    console.log('Found new posts for user ' + doc.yo + ' in subreddit /r/' + result + '!');
     yo.yo(doc.yo, function() {
       doc.lastUpdate = new Date();
       doc.save(next);
