@@ -1,4 +1,4 @@
-yo-twitter
+yo-reddit
 ==========
 
-Sends you a Yo whenever a certain person tweets.
+Sends you a Yo whenever a new post is made in your subreddits.
