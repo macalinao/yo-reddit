@@ -56,6 +56,7 @@ function handleSubscriber(doc, next) {
     });
   }, function(result) {
     yo.yo(doc.yo, function() {
+      doc.lastUpdate = new Date();
       doc.save(next);
     });
   });

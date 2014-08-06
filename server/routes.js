@@ -20,7 +20,8 @@ module.exports = function(app) {
         if (!doc) {
           doc = new Subscriber({
             yo: yoName,
-            following: [subreddit]
+            following: [subreddit],
+            lastUpdate: new Date()
           });
         } else {
           doc.following.push(subreddit);
