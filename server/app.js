@@ -50,8 +50,9 @@ function handleSubscriber(doc, next) {
         cb(err);
       }
       var posts = res.body.data.children;
-      cb(null, _.find(posts, function(post) {
-        return last.isBefore(post.created_utc) ? subreddit : null;
+      cb(_.find(posts, function(post) {
+        console.log(last.isBefore(post.created_utc));
+        return last.isBefore(post.created_utc);
       }));
     });
   }, function(result) {
