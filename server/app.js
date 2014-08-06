@@ -10,7 +10,9 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var _ = require('lodash');
 var async = require('async');
 var express = require('express');
+var moment = require('moment');
 var mongoose = require('mongoose');
+var request = require('superagent');
 var config = require('./config/environment');
 
 // Connect to database
@@ -38,16 +40,23 @@ var yo = (function() {
   return new Yo(process.env.YO_API_TOKEN);
 })();
 
-function isTwitterUpdated(user) {
-
-}
-
 function handleSubscriber(doc, next) {
-  async.detect(doc.following, function(twitterName, cb) {
-    isTwitterUpdated(twitterName, cb);
+  var last = moment(doc.lastUpdate);
+
+  // detect if there are updates to the subreddit
+  async.detect(doc.following, function(subreddit, cb) {
+    request.get('http://www.reddit.com/r/' + subreddit + '/new.json').end(function(err, dres) {
+      if (err) {
+        cb(err);
+      }
+      var posts = res.body.data.children;
+      cb(null, _.find(posts, function(post) {
+        return last.isBefore(post.created_utc);
+      }));
+    });
   }, function(result) {
-    yo.yo(doc.yo, function(err, head, body) {
-      next();
+    yo.yo(doc.yo, function() {
+      doc.save(next);
     });
   });
 };

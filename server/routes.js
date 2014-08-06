@@ -11,7 +11,7 @@ module.exports = function(app) {
   app.route('/register')
     .post(function(req, res) {
       var yoName = req.body.yoName;
-      var twitterName = req.body.twitterName;
+      var subreddit = req.body.subreddit;
 
       var Subscriber = mongoose.model('Subscriber');
       Subscriber.findOne({
@@ -20,10 +20,10 @@ module.exports = function(app) {
         if (!doc) {
           doc = new Subscriber({
             yo: yoName,
-            following: [twitterName]
+            following: [subreddit]
           });
         } else {
-          doc.following.push(twitterName);
+          doc.following.push(subreddit);
         }
         doc.save(function(err) {
           res.send('OK');

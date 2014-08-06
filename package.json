@@ -17,9 +17,11 @@
     "express-session": "~1.0.2",
     "lodash": "^2.4.1",
     "method-override": "~1.0.0",
+    "moment": "^2.8.1",
     "mongoose": "~3.8.8",
     "morgan": "~1.0.0",
     "static-favicon": "~1.0.1",
+    "superagent": "^0.18.2",
     "twit": "^1.1.18",
     "yo-api": "^0.2.0"
   },
