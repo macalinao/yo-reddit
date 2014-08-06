@@ -45,7 +45,7 @@ function handleSubscriber(doc, next) {
 
   // detect if there are updates to the subreddit
   async.detect(doc.following, function(subreddit, cb) {
-    request.get('http://www.reddit.com/r/' + subreddit + '/new.json').end(function(err, dres) {
+    request.get('http://www.reddit.com/r/' + subreddit + '/new.json').end(function(err, res) {
       if (err) {
         cb(err);
       }
