@@ -51,7 +51,6 @@ function handleSubscriber(doc, next) {
       }
       var posts = res.body.data.children;
       cb(_.find(posts, function(post) {
-        console.log(last.isBefore(post.created_utc));
         return last.isBefore(post.created_utc);
       }));
     });
