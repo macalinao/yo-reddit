@@ -15,6 +15,10 @@ var mongoose = require('mongoose');
 var request = require('superagent');
 var config = require('./config/environment');
 
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ' + err);
+});
+
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
